@@ -46,7 +46,8 @@ public class LoginController {
 		LOG.info("loginCheck() -- PARAMS: "+ userCredential.toString());
 		
 		if (userCredential.getUsername().equals("admin") && userCredential.getPassword().equals("admin")) {
-			return ViewConstant.CONTACTS;
+			//return ViewConstant.CONTACTS;
+			return "redirect:/contacts/showcontacts";
 		}
 		
 		LOG.info("Redirect to /login?error");
