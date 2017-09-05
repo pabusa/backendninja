@@ -38,11 +38,25 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		
+
 		long startTime = (long) request.getAttribute("startTime");
 		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		String username = "";
+		if (auth != null && auth.isAuthenticated()){
+			username = auth.getName();
+		}
+		
+		String url = request.getRequestURL().toString();
+		
+		logRepository.save(new com.udemy.entity.Log(new Date(), auth.getDetails().toString(), username , url));
+		
+		LOG.info("Url to: '"+ url + "' in : "+ (System.currentTimeMillis() - startTime) +"ms");
 
 		super.afterCompletion(request, response, handler, ex);
 	}
+	
+	
 
 }
